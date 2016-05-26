@@ -4,7 +4,11 @@ Mutual TLS authentication for Falcon.
 
 ## Usage ##
 
-TODO: Fill this out.
+To import:
+
+```python
+from falcon_mutualauth.mutualauth import Authorize, MutualAuthRequest
+```
 
 ## License ##
 
