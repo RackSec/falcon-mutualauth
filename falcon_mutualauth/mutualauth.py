@@ -21,7 +21,7 @@ from twisted.web.server import Request
 logger = structlog.get_logger()
 
 
-class MutualAuthRequest(object, Request):
+class MutualAuthRequest(Request):
 
     """HTTP request received over mutually-authenticated TLS.
 
@@ -37,12 +37,6 @@ class MutualAuthRequest(object, Request):
     """
 
     roles_map = {}
-
-    def __init__(self, channel, queued):
-        # Separate the old-style class from new-style class to avoid unexpected
-        # MRO by explicitly calling the superclasses' __init__s separately
-        super(MutualAuthRequest, self).__init__()
-        Request.__init__(self, channel, queued)
 
     def _inject_headers(self):
         peer_cert = self.channel.transport.getPeerCertificate()
