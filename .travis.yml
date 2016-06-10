@@ -1,0 +1,20 @@
+sudo: false
+language: python
+matrix:
+  include:
+  - python: 2.7
+    env: TOXENV=pep8
+  - python: 2.7
+    env: TOXENV=py27
+  - python: 3.4
+    env: TOXENV=py34
+  - python: 3.5
+    env: TOXENV=py35
+install: pip install tox codecov
+script:
+  - tox
+after_success: codecov
+notifications:
+  email: false
+  slack:
+    secure: Z1UklrJKcA8NPAXgcCjlOfZpPcZrZfGW7OQ0Li4lg86mLnEywJKdPzWgJtFb0SbUWjOfap0DzIr7rakcbJEkgz1rVy0s7udx7HYYmZurjuT/WTqQaVnp6bSdSjEs7tci3ePPY6GToheR5Dh3bHfuEKfEPvyy9804rDeL6Vl2N5sIJyOzXhJDy7KcFfOJaZzViTNhpmMlt9QKITDB9ToU2nkq9LDAh3+zq5ljvyWFEvq/wsqvIxCyXqrB7b33VCFz1UhUwITQxtRBa0AggutHqPXy18T5yQQjLTZ9Z5yZw1fIE+5PMPF2QMOuBidbvCWuSClwCokWuOox0ELIlYzN6hYLzOYLiHUstJFBCeSCvxB5HVIjgTJU56ntzWegvTS02tB+K9jMIk1lBSuOSQXVIXtCkqIPgVj/pofNXSTfzHa5CBnpfYLOsSKsYN6YjEUAn0RSfitso/w++8BmBuQIALxnZfDqkbJH3D58IL+eMACLrcQeeMEyktVBtSRF+rA6UCnGNXoOFz0sZH+Hs93xvg2Kojw7lr9mZKS4e5dOlc2v8GxIoNdOpH7vsJF+iB4ULTgCI2MKn5/RTrDbju3xcpjXJtn1QckU2ReIGFGVnZvfQwOdUH9Jd4egh+6HPvVqHUo76ZJKqndEuMdULXDXd/wIfv7Oiemz7jRAowDUPYk=
