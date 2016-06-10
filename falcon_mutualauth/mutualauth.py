@@ -49,7 +49,7 @@ class MutualAuthRequest(Request):
         # NOTE(kgriffs): Override render, instead of process, to ensure
         #   that we have the last say in the value of the headers.
         self._inject_headers()
-        super(MutualAuthRequest, self).render(resource)
+        Request.render(self, resource)
 
 
 class Authorize(object):
