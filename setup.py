@@ -13,5 +13,7 @@ setup(
         'falcon',
         'structlog',
         'twisted',
+        'pyopenssl',
+        'service_identity',
     ],
 )
