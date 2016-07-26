@@ -12,6 +12,7 @@ class FakeRequest(object):
     def __init__(self, role):
         self._role = role
         self.env = {'REMOTE_ADDR': 'http://test.test'}
+        self.method = 'GET'
         self.user_agent = 'pytest'
 
     def get_header(self, header):
@@ -21,8 +22,8 @@ class FakeRequest(object):
 
 class FakeResource(object):
 
-    def __init__(self, authorized_for):
-        self.authorized_for = authorized_for
+    def __init__(self, authorized_for_map):
+        self.authorized_for_map = authorized_for_map
 
 
 class TestAuthorize(unittest.TestCase):
@@ -59,7 +60,8 @@ class TestAuthorize(unittest.TestCase):
 class TestAuthorizeWithResource(TestAuthorize):
 
     def _create_fake_resource(self):
-        return FakeResource(set(('admin', 'principle', 'superintendent')))
+        authmap = {'on_get': ['admin', 'principle', 'superintendent']}
+        return FakeResource(authmap)
 
     def test_log_in_as_superintendent(self):
         self._auth.process_resource(

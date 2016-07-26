@@ -74,14 +74,14 @@ class Authorize(object):
     # NOTE(fxfitz): Falcon v1.0 requires the params parameter, so adding this
     # here now to be forward compatible with Falcon when v1.0 is released
     def process_resource(self, req, resp, resource, params=None):
-        authd_roles = getattr(resource, 'authorized_for_map')
+        authd_roles = getattr(resource, 'authorized_for_map', {})
 
         roles = set(req.get_header('X-User-Roles').split(','))
 
-        get_roles = authd_roles.get('on_get', default_roles)
-        post_roles = authd_roles.get('on_post', default_roles)
-        put_roles = authd_roles.get('on_put', default_roles)
-        del_roles = authd_roles.get('on_del', default_roles)
+        get_roles = authd_roles.get('on_get', self._default_roles)
+        post_roles = authd_roles.get('on_post', self._default_roles)
+        put_roles = authd_roles.get('on_put', self._default_roles)
+        del_roles = authd_roles.get('on_del', self._default_roles)
 
         no_get_auth = roles.isdisjoint(get_roles)
         no_put_auth = roles.isdisjoint(post_roles)
