@@ -78,31 +78,13 @@ class Authorize(object):
 
         roles = set(req.get_header('X-User-Roles').split(','))
 
-        get_roles = authd_roles.get('on_get', self._default_roles)
-        post_roles = authd_roles.get('on_post', self._default_roles)
-        put_roles = authd_roles.get('on_put', self._default_roles)
-        del_roles = authd_roles.get('on_del', self._default_roles)
+        key = 'on_{method}'.format(method=req.method.lower())
 
-        no_get_auth = roles.isdisjoint(get_roles)
-        no_put_auth = roles.isdisjoint(post_roles)
-        no_del_auth = roles.isdisjoint(put_roles)
-        no_post_auth = roles.isdisjoint(del_roles)
+        authd_roles = authd_roles.get(key, self._default_roles)
 
-        is_authorized = True
+        is_not_authorized = roles.isdisjoint(authd_roles)
 
-        if no_get_auth and req.method == 'GET':
-            is_authorized = False
-
-        if no_put_auth and req.method == 'PUT':
-            is_authorized = False
-
-        if no_del_auth and req.method == 'DELETE':
-            is_authorized = False
-
-        if no_post_auth and req.method == 'POST':
-            is_authorized = False
-
-        if not is_authorized:
+        if is_not_authorized:
             msg = 'You are not authorized to access this resource.'
 
             # TODO(fxfitz): Request IP is currently returning the HA Proxy
