@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='falcon-mutualauth',
-    version='0.4',
+    version='0.5',
     description='Mutual TLS authentication for Falcon',
     author='Rackspace',
     author_email='',
