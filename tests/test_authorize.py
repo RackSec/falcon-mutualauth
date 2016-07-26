@@ -29,7 +29,7 @@ class FakeResource(object):
 class TestAuthorize(unittest.TestCase):
 
     def setUp(self):
-        self._auth = Authorize('admin', 'principle')
+        self._auth = Authorize('admin', 'principal')
         self._resource = self._create_fake_resource()
 
     def _create_fake_resource(self):
@@ -38,18 +38,18 @@ class TestAuthorize(unittest.TestCase):
     def test_log_in_as_admin(self):
         self._auth.process_resource(FakeRequest('admin'), None, self._resource)
 
-    def test_log_in_as_principle(self):
+    def test_log_in_as_principal(self):
         self._auth.process_resource(
-            FakeRequest('principle'), None, self._resource)
+            FakeRequest('principal'), None, self._resource)
 
-    def test_log_in_as_principle_or_admin(self):
+    def test_log_in_as_principal_or_admin(self):
         self._auth.process_resource(
-            FakeRequest('principle,admin'), None, self._resource)
+            FakeRequest('principal, admin'), None, self._resource)
 
     def test_should_fail_if_list_not_properly_formatted(self):
         with pytest.raises(falcon.HTTPForbidden):
             self._auth.process_resource(
-                FakeRequest(' principle, admin'), None, self._resource)
+                FakeRequest(' principal, admin'), None, self._resource)
 
     def test_should_fail_if_not_in_list(self):
         with pytest.raises(falcon.HTTPForbidden):
@@ -60,7 +60,7 @@ class TestAuthorize(unittest.TestCase):
 class TestAuthorizeWithResource(TestAuthorize):
 
     def _create_fake_resource(self):
-        authmap = {'on_get': ['admin', 'principle', 'superintendent']}
+        authmap = {'on_get': ['admin', 'principal', 'superintendent']}
         return FakeResource(authmap)
 
     def test_log_in_as_superintendent(self):
