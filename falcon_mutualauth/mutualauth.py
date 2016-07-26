@@ -74,11 +74,17 @@ class Authorize(object):
     # NOTE(fxfitz): Falcon v1.0 requires the params parameter, so adding this
     # here now to be forward compatible with Falcon when v1.0 is released
     def process_resource(self, req, resp, resource, params=None):
-        authorized_roles = getattr(
-            resource, 'authorized_for', self._default_roles)
+        authd_roles = getattr(resource, 'authorized_for_map', {})
+
         roles = set(req.get_header('X-User-Roles').split(','))
 
-        if roles.isdisjoint(authorized_roles):
+        key = 'on_{method}'.format(method=req.method.lower())
+
+        authd_roles = authd_roles.get(key, self._default_roles)
+
+        is_not_authorized = roles.isdisjoint(authd_roles)
+
+        if is_not_authorized:
             msg = 'You are not authorized to access this resource.'
 
             # TODO(fxfitz): Request IP is currently returning the HA Proxy
