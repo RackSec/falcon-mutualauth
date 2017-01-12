@@ -41,9 +41,11 @@ class MutualAuthRequest(Request):
 
     def _inject_headers(self):
         peer_cert = self.channel.transport.getPeerCertificate()
-        common_name = peer_cert.get_subject().CN
+        user = peer_cert.get_subject().CN
 
-        roles = self.roles_map.get(common_name, [])
+        roles = self.roles_map.get(user, [])
+
+        self.requestHeaders.setRawHeaders(b'X-User', [user])
         self.requestHeaders.setRawHeaders(b'X-User-Roles', roles)
 
     def render(self, resource):

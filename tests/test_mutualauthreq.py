@@ -17,7 +17,7 @@ from falcon_mutualauth.mutualauth import Authorize, MutualAuthRequest
 
 class HelloResource(object):
     def on_get(self, req, resp):
-        resp.body = 'hello alice!'
+        resp.body = req.get_header('X-User')
 
 
 class TestTLSCerts(testing.TestCase):
@@ -102,6 +102,7 @@ class TestTLSCerts(testing.TestCase):
     def test_authorized(self):
         resp = self._session.get('https://127.0.0.1:8080/')
         self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.text, 'Alice')
 
     def test_unauthorized(self):
         cert = (self._cert_path('client-cert-eve.pem'),
